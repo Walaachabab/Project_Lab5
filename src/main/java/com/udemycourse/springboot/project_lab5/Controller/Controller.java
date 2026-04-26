@@ -1,5 +1,6 @@
 package com.udemycourse.springboot.project_lab5.Controller;
 
+import com.udemycourse.springboot.project_lab5.ApiResponse.ApiResponse;
 import com.udemycourse.springboot.project_lab5.Model.Project;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,43 +21,45 @@ public ArrayList<Project> getProjects() {
 
 // 2 endpoint post
     @PostMapping("/add")
-    public String addProject(@RequestBody Project project) {
+    public ApiResponse addProject(@RequestBody Project project) {
     projects.add(project);
-    return "Project added successfully";
+    return new ApiResponse("Project added successfully");
     }
 
 
 // 3 endpoint put
     @PutMapping("/update/{index}")
-    public String updateProject(@PathVariable int index, @RequestBody Project project) {
+    public ApiResponse updateProject(@PathVariable int index, @RequestBody Project project) {
     projects.set(index, project);
-    return "Project updated successfully";
+    return new ApiResponse("Project updated successfully");
     }
 
 // 4 endpoint delete
 @DeleteMapping("/delete/{index}")
- public String deleteProject(@PathVariable int index) {
+ public ApiResponse deleteProject(@PathVariable int index) {
     projects.remove(index);
-    return "Project deleted successfully";
+    return new ApiResponse("Project deleted successfully");
  }
+
+
 
  // 5 endpoint Change Status
  @PutMapping("/change-status/{index}")
- public String changeStatus(@PathVariable int index) {
+ public ApiResponse changeStatus(@PathVariable int index) {
      if (projects.get(index).getStatus().equals("not done")) {
          projects.get(index).setStatus("done");
      } else {
          projects.get(index).setStatus("not done");
      }
-     return "Project status changed successfully";
+     return new ApiResponse("Project status changed successfully");
  }
 
 // 6 endpoint Search by Title
     @GetMapping("/search/{title}")
-    public String  searchProject(@PathVariable String title) {
+    public Project searchProject(@PathVariable String title) {
         for (Project p : projects) {
        if(p.getTitle().equals(title)) {
-           return p.toString();
+           return p;
         }
      }
            return null;
